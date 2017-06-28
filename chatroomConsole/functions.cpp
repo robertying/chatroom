@@ -75,6 +75,7 @@ void User::Input()
 	memset(inputBuffer, 0, sizeof(inputBuffer));
 	while (Online)
 	{
+		cout << "message:"; //TO BE REMOVED
 		cin >> inputBuffer; //TODO receive text from gui
 		SendString(inputBuffer);
 		memset(inputBuffer, 0, sizeof(inputBuffer));
@@ -87,8 +88,31 @@ void User::Output()
 	memset(recvBuffer, 0, sizeof(recvBuffer));
 	while (Online)
 	{
+		//receive
 		ReceiveString(recvBuffer);
-		cout << recvBuffer << endl; //TODO
+
+		//convert char to log
+		char name[20] = { '\0' };
+		char ctime[20] = { '\0' };
+		char content[100] = { '\0' };
+		time_t time;
+
+		string str = string(recvBuffer);
+		int begin = str.find_first_of(' ');
+		int end = str.find(' ', begin + 1);
+		str.copy(name, begin, 0);
+		str.copy(ctime, end - begin, begin);
+		time = atol(ctime);
+		string newstr = str.erase(0, end + 1);
+		newstr.copy(content, newstr.length(), 0);
+
+		ClientLog temp;
+		temp.SetLog(string(name), time, content);
+
+		//save to client log
+		fstream output;
+		output << temp;
+
 		memset(recvBuffer, 0, sizeof(recvBuffer));
 	}
 }

@@ -27,6 +27,7 @@ void Server::ConnectServerSocket()
 	//bind the port
 	bind(sockServer, (sockaddr *)&addrServer, sizeof(addrServer));
 	listen(sockServer, 5);
+	Online = true;
 	cout << "Server started..." << endl;
 }
 
@@ -91,15 +92,23 @@ void Admin::Output(int ID)
 	memset(sendBuffer, 0, sizeof(sendBuffer));
 	
 	ifstream input;
-	input.open("log.txt", ios::in);
 	streampos p=0;
 	while (ClientList[ID].Online)
 	{
 		//read from log
+		mtx.lock();
+		input.open("log.txt", ios::in);
 		input.seekg(p);
 		input.getline(sendBuffer, 200);
 		p=input.tellg();
-		if (input.eof()) continue;
+		if (input.eof())
+		{
+			input.close();
+			mtx.unlock();
+			continue;
+		}
+		input.close();
+		mtx.unlock();
 
 		//send
 		SendString(ID, sendBuffer);

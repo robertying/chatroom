@@ -84,6 +84,7 @@ public:
 
 	void SetLog(string name, time_t time, char *content);
 	time_t ShowTime();
+	string tTimeTosTime();
 protected:
 	//local log
 	Log LogContent;
