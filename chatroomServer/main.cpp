@@ -11,7 +11,7 @@ int main()
 
 		//thread to accept clients
 		pthread_t threadRequest;
-		pthread_create(&threadRequest, NULL, admin.ReceiveRequest, 0);
+		pthread_create(&threadRequest, NULL, admin.ReceiveRequest, (void*)&admin);
 
 		//thread to receive client messages and send server logs
 		int i;
