@@ -135,12 +135,12 @@ void* Admin::ReceiveRequest(void* args)
 		Client tmp;
 		socklen_t addrClientSize = sizeof(sockaddr_in);
 		tmp.sockClient = accept(para->sockServer, (sockaddr*)&(tmp.addrClient), &addrClientSize);
+		tmp.Online = true;
 		para->ClientList.push_back(tmp);
 		
 		//client is online
 		char ipBuff[INET_ADDRSTRLEN];
 		printf("User IP:%s connected..\n", inet_ntop(AF_INET, &(tmp.addrClient.sin_addr),ipBuff,sizeof(ipBuff)));
-		tmp.Online = true;
 
 		Client::ClientNum++;
 	}

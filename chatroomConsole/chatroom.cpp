@@ -85,7 +85,7 @@ void User::Input()
 	memset(inputBuffer, 0, sizeof(inputBuffer));
 	while (Online)
 	{
-		cout << "message:"; //TO BE REMOVED
+//		cout << "message:"; //TO BE REMOVED
 //		cin.getline(inputBuffer,200,'\n'); //TODO receive text from gui
 		strcpy_s(inputBuffer,"hello world!");
 		SendString(inputBuffer);
