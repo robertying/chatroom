@@ -119,6 +119,7 @@ void* Admin::Output(void* args)
 		input.close();
 		pthread_mutex_unlock(&mtx);
 
+		cout << sendBuffer << endl;
 		//send
 		para->pThis->SendString(para->ID, sendBuffer);
 		memset(sendBuffer, 0, sizeof(sendBuffer));

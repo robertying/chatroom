@@ -81,15 +81,13 @@ void User::ReceiveString(char * StringToReceive)
 
 void User::Input()
 {
-	char test;
-	cin >> test;
 	char inputBuffer[200];
 	memset(inputBuffer, 0, sizeof(inputBuffer));
 	while (Online)
 	{
-		//cout << "message:"; //TO BE REMOVED
-		//cout << "aaa";
-		cin.getline(inputBuffer,200,'\n'); //TODO receive text from gui
+		cout << "message:"; //TO BE REMOVED
+//		cin.getline(inputBuffer,200,'\n'); //TODO receive text from gui
+		strcpy_s(inputBuffer,"hello world!");
 		SendString(inputBuffer);
 		memset(inputBuffer, 0, sizeof(inputBuffer));
 	}
