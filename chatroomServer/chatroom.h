@@ -61,8 +61,8 @@ protected:
 class Communication
 {
 public:
-	virtual void SendString(char* StringToSend);
-	virtual void ReceiveString(char* StringToReceive);
+	virtual void SendString(int ID, char* StringToSend)=0;
+	virtual void ReceiveString(int ID, char* StringToReceive)=0;
 };
 
 //server behaviors
