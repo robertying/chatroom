@@ -125,12 +125,15 @@ void* Admin::ReceiveRequest(void* args)
 	while (para->Online) //server is online
 	{
 		//accept
+		Client tmp;
 		socklen_t addrClientSize = sizeof(sockaddr_in);
-		para->ClientList[Client::ClientNum].sockClient = accept(para->sockServer, (sockaddr*)&(para->ClientList[Client::ClientNum].addrClient), &addrClientSize);
+		tmp.sockClient = accept(para->sockServer, (sockaddr*)&(tmp.addrClient), &addrClientSize);
+		ClientList.push_back(tmp);
+		
 		//client is online
 		char ipBuff[INET_ADDRSTRLEN];
-		printf("User IP:%s connected..\n", inet_ntop(AF_INET, &(para->ClientList[Client::ClientNum].addrClient.sin_addr),ipBuff,sizeof(ipBuff)));
-		para->ClientList[Client::ClientNum].Online = true;
+		printf("User IP:%s connected..\n", inet_ntop(AF_INET, &(tmp.addrClient.sin_addr),ipBuff,sizeof(ipBuff)));
+		tmp.Online = true;
 
 		Client::ClientNum++;
 	}
