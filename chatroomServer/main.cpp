@@ -20,10 +20,13 @@ int main()
 		vector <pthread_t> SendThread;
 		for (i = ThreadNum; i < Client::ClientNum; ++i)
 		{
+			Parameter para;
+			para.pThis = &admin;
+			para.ID = ThreadNum;
 			pthread_t tmp;
-			pthread_create(&tmp, NULL, admin.Input, (void *)&ThreadNum);
+			pthread_create(&tmp, NULL, admin.Input, (void *)&para);
 			ReceiveThread.push_back(tmp);
-			pthread_create(&tmp, NULL, admin.Output, (void *)&ThreadNum);
+			pthread_create(&tmp, NULL, admin.Output, (void *)&para);
 			SendThread.push_back(tmp);
 			ThreadNum++;
 		}
