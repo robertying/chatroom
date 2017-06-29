@@ -1,5 +1,6 @@
 #include "chatroom.h"
 int Client::ClientNum = 0;
+pthread_mutex_t mtx;
 
 Client::Client()
 {
@@ -137,7 +138,7 @@ void* Admin::ReceiveRequest(void* args)
 
 File::File()
 {
-	Path = "log.txt";
+	Path = (char*)"log.txt";
 }
 
 void File::SetPath(char* path)
