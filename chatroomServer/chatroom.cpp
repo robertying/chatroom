@@ -40,6 +40,7 @@ void Server::CloseServerSocket()
 void Admin::CloseClientSocket(int ID)
 {
 	close(ClientList[ID].sockClient);
+	cout << "Client " << ID << " closed" << endl;
 }
 
 void Admin::SendString(int ID, char* StringToSend)
@@ -51,7 +52,7 @@ void Admin::ReceiveString(int ID, char* StringToReceive)
 {
 	int status;
 	status=recv(ClientList[ID].sockClient, StringToReceive, 200, 0);
-	if (status <= 0 && errno != EINTR)
+	if (status <= 0)
 	{
 		ClientList[ID].Online = false;
 		CloseClientSocket(ID);
