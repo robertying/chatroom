@@ -21,6 +21,7 @@ void Server::CreateServerSocket()
 	addrServer.sin_addr.s_addr = htonl(INADDR_ANY);
 	addrServer.sin_port = htons(42001);
 	addrServer.sin_family = AF_INET;
+	cout << "CreateServerSocket" << endl;
 }
 
 void Server::ConnectServerSocket()
@@ -35,6 +36,7 @@ void Server::ConnectServerSocket()
 void Server::CloseServerSocket()
 {
 	close(sockServer);
+	cout << "CloseServerSocket" << endl;
 }
 
 void Admin::CloseClientSocket(int ID)
@@ -46,6 +48,7 @@ void Admin::CloseClientSocket(int ID)
 void Admin::SendString(int ID, char* StringToSend)
 {
 	send(ClientList[ID].sockClient, StringToSend, strlen(StringToSend), 0);
+	cout << "SendString" << endl;
 }
 
 void Admin::ReceiveString(int ID, char* StringToReceive)
@@ -57,10 +60,12 @@ void Admin::ReceiveString(int ID, char* StringToReceive)
 		ClientList[ID].Online = false;
 		CloseClientSocket(ID);
 	}
+	cout << "ReceiveString" << endl;
 }
 
 void* Admin::Input(void* args)
 {
+	cout << "Call Input Thread" << endl;
 	Parameter *para = (Parameter*)args;
 	char recvBuffer[200];
 	memset(recvBuffer, 0, sizeof(recvBuffer));
@@ -97,6 +102,7 @@ void* Admin::Input(void* args)
 
 void* Admin::Output(void* args)
 {
+	cout << "Call Output Thread" << endl;
 	Parameter *para = (Parameter*)args;
 	char sendBuffer[200];
 	memset(sendBuffer, 0, sizeof(sendBuffer));
@@ -159,6 +165,7 @@ void File::SetPath(char* path)
 
 fstream& operator<<(fstream& output, ServerLog& log)
 {
+	cout << "Call <<operator" << endl;
 	//file lock
 	pthread_mutex_lock(&mtx);
 
@@ -212,6 +219,7 @@ fstream& operator<<(fstream& output, ServerLog& log)
 
 fstream& operator>>(fstream& input, ServerLog& log)
 {
+	cout << "Call >>operator" << endl;
 	pthread_mutex_lock(&mtx);
 
 	input.open(log.Path, ios::in);

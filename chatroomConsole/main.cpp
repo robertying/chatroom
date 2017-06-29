@@ -7,7 +7,6 @@ int main()
 	user.InitializeClient();
 	user.CreateClientSocket();
 	user.ConnectClientSocket(); //TO DO : IS SERVER ONLINE? CONNECTION LOST
-	cout << "Connected" << endl; //TO BE REMOVED
 	
 	//acquire user name
 	cout << "Name:";// TO BE REMOVED

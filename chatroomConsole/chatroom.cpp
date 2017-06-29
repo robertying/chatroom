@@ -16,6 +16,7 @@ int Client::InitializeClient()
 		WSACleanup();
 		return -2;
 	}
+	cout << "InitializeClient" << endl;
 	return 0;
 }
 
@@ -28,6 +29,7 @@ void Client::CreateClientSocket()
 	addrServ.sin_addr.S_un.S_addr = inet_addr("45.55.3.170");
 	addrServ.sin_family = AF_INET;
 	addrServ.sin_port = htons(42001);
+	cout << "CreateClientSocket" << endl;
 }
 
 void Client::ConnectClientSocket()
@@ -35,6 +37,7 @@ void Client::ConnectClientSocket()
 	//connect
 	connect(sockClient, (SOCKADDR *)&addrServ, sizeof(SOCKADDR));
 	Online = true;
+	cout << "ConnectClientSocket" << endl;
 }
 
 void Client::CloseClientSocket()
@@ -43,6 +46,7 @@ void Client::CloseClientSocket()
 	closesocket(sockClient);
 	Online = false;
 	WSACleanup();
+	cout << "CloseClientSocket" << endl;
 }
 
 User::User()
@@ -66,21 +70,24 @@ void User::SendString(char* StringToSend)
 {
 	int status;
 	status=send(sockClient, StringToSend, strlen(StringToSend), 0);
-	if (status <= 0 && errno != EINTR)
+	if (status <= 0)
 	{
 		Server::Online = false;
 		CloseClientSocket();
 		ConnectionLost();
 	}
+	cout << "SendString" << endl;
 }
 
 void User::ReceiveString(char * StringToReceive)
 {
 	recv(sockClient, StringToReceive, 100, 0);
+	cout << "ReceiveString" << endl;
 }
 
 void User::Input()
 {
+	cout << "Call Input Thread" << endl;
 	char inputBuffer[200];
 	memset(inputBuffer, 0, sizeof(inputBuffer));
 	while (Online)
@@ -95,6 +102,7 @@ void User::Input()
 
 void User::Output()
 {
+	cout << "Call Output Thread" << endl;
 	char recvBuffer[200];
 	memset(recvBuffer, 0, sizeof(recvBuffer));
 	while (Online)
@@ -150,6 +158,7 @@ void File::SetPath(char* path)
 
 fstream& operator<<(fstream& output, ClientLog& log)
 {
+	cout << "Call <<operator" << endl;
 	//file lock
 	mtx.lock();
 
@@ -203,6 +212,7 @@ fstream& operator<<(fstream& output, ClientLog& log)
 
 fstream& operator>>(fstream& input, ClientLog& log)
 {
+	cout << "Call >>operator" << endl;
 	mtx.lock();
 
 	input.open(log.Path, ios::in);
