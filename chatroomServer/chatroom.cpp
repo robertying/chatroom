@@ -128,7 +128,7 @@ void* Admin::ReceiveRequest(void* args)
 		Client tmp;
 		socklen_t addrClientSize = sizeof(sockaddr_in);
 		tmp.sockClient = accept(para->sockServer, (sockaddr*)&(tmp.addrClient), &addrClientSize);
-		ClientList.push_back(tmp);
+		para->ClientList.push_back(tmp);
 		
 		//client is online
 		char ipBuff[INET_ADDRSTRLEN];
