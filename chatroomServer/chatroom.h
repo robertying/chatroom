@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <vector>
+#include <errno.h>
 using namespace std;
 
 extern pthread_mutex_t mtx; //used for file locks
