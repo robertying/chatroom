@@ -51,14 +51,15 @@ void Admin::ReceiveString(int ID, char* StringToReceive)
 	recv(ClientList[ID].sockClient, StringToReceive, 200, 0);
 }
 
-void Admin::Input(int ID)
+void Admin::Input(void* args)
 {
+	Parameter *para = (Parameter*)args;
 	char recvBuffer[200];
 	memset(recvBuffer, 0, sizeof(recvBuffer));
-	while (ClientList[ID].Online)
+	while (para->pThis->ClientList[para->ID].Online)
 	{
 		//receive
-		ReceiveString(ID, recvBuffer);
+		para->pThis->ReceiveString(para->ID, recvBuffer);
 
 		//convert char to log
 		char name[20] = { '\0' };
@@ -86,14 +87,15 @@ void Admin::Input(int ID)
 	}
 }
 
-void Admin::Output(int ID)
+void Admin::Output(void* args)
 {
+	Parameter *para = (Parameter*)args;
 	char sendBuffer[200];
 	memset(sendBuffer, 0, sizeof(sendBuffer));
 	
 	ifstream input;
 	streampos p=0;
-	while (ClientList[ID].Online)
+	while (para->pThis->ClientList[para->ID].Online)
 	{
 		//read from log
 		pthread_mutex_lock(&mtx);
@@ -111,7 +113,7 @@ void Admin::Output(int ID)
 		pthread_mutex_unlock(&mtx);
 
 		//send
-		SendString(ID, sendBuffer);
+		para->pThis->SendString(para->ID, sendBuffer);
 		memset(sendBuffer, 0, sizeof(sendBuffer));
 	}
 }

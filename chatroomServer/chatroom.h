@@ -15,6 +15,14 @@ using namespace std;
 
 extern pthread_mutex_t mtx; //used for file locks
 
+//used to pass parameters
+class Admin;
+struct Parameter
+{
+	Admin* pThis;
+	int ID;
+};
+
 //log format
 struct Log
 {
@@ -73,8 +81,8 @@ public:
 	void CloseClientSocket(int ID);
 
 	//thread functions
-	void Input(int ID);
-	void Output(int ID);
+	static void Input(void* args);
+	static void Output(void* args);
 protected:
 	//for increasing clients
 	vector <Client> ClientList;
