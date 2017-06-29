@@ -2,13 +2,13 @@
 
 int main()
 {
+	//initialize server
+	Admin admin;
+	admin.CreateServerSocket();
+	admin.ConnectServerSocket();
+
 	while (1)
 	{
-		//initialize server
-		Admin admin;
-		admin.CreateServerSocket();
-		admin.ConnectServerSocket();
-
 		//thread to accept clients
 		pthread_t threadRequest;
 		pthread_create(&threadRequest, NULL, admin.ReceiveRequest, (void*)&admin);
@@ -31,10 +31,6 @@ int main()
 			ThreadNum++;
 		}
 
-		//close server socket and offline
-		admin.CloseServerSocket();
-		admin.Online = false;
-
 		//wait for threads to end
 		void* status;
 		pthread_join(threadRequest, &status);
@@ -44,5 +40,10 @@ int main()
 			pthread_join(SendThread[i], &status);
 		}
 	}
+
+	//close server socket and offline
+	admin.CloseServerSocket();
+	admin.Online = false;
+
 	return 0;
 }
