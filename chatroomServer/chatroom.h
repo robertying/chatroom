@@ -13,7 +13,7 @@
 #include <vector>
 using namespace std;
 
-extern mutex mtx; //used for file locks
+extern pthread_mutex_t mtx; //used for file locks
 
 //log format
 struct Log

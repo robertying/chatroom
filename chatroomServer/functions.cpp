@@ -96,7 +96,7 @@ void Admin::Output(int ID)
 	while (ClientList[ID].Online)
 	{
 		//read from log
-		mtx.lock();
+		pthread_mutex_lock(&mtx);
 		input.open("log.txt", ios::in);
 		input.seekg(p);
 		input.getline(sendBuffer, 200);
@@ -104,11 +104,11 @@ void Admin::Output(int ID)
 		if (input.eof())
 		{
 			input.close();
-			mtx.unlock();
+			pthread_mutex_unlock(&mtx);
 			continue;
 		}
 		input.close();
-		mtx.unlock();
+		pthread_mutex_unlock(&mtx);
 
 		//send
 		SendString(ID, sendBuffer);
@@ -145,7 +145,7 @@ void File::SetPath(char* path)
 fstream& operator<<(fstream& output, ServerLog& log)
 {
 	//file lock
-	mtx.lock();
+	pthread_mutex_lock(&mtx);
 
 	//read from log file
 	output.open(log.Path, ios::in | ios::app);
@@ -191,20 +191,20 @@ fstream& operator<<(fstream& output, ServerLog& log)
 	}
 	output.close();
 
-	mtx.unlock();
+	pthread_mutex_unlock(&mtx);
 	return output;
 }
 
 fstream& operator>>(fstream& input, ServerLog& log)
 {
-	mtx.lock();
+	pthread_mutex_lock(&mtx);
 
 	input.open(log.Path, ios::in);
 	input >> log.LogContent.Name >> log.LogContent.rawTime >> log.LogContent.Content;
 
 	input.close();
 
-	mtx.unlock();
+	pthread_mutex_unlock(&mtx);
 	return input;
 }
 
