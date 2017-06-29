@@ -51,7 +51,7 @@ void Admin::ReceiveString(int ID, char* StringToReceive)
 	recv(ClientList[ID].sockClient, StringToReceive, 200, 0);
 }
 
-void Admin::Input(void* args)
+void* Admin::Input(void* args)
 {
 	Parameter *para = (Parameter*)args;
 	char recvBuffer[200];
@@ -87,7 +87,7 @@ void Admin::Input(void* args)
 	}
 }
 
-void Admin::Output(void* args)
+void* Admin::Output(void* args)
 {
 	Parameter *para = (Parameter*)args;
 	char sendBuffer[200];
@@ -118,14 +118,14 @@ void Admin::Output(void* args)
 	}
 }
 
-void Admin::ReceiveRequest(void* args)
+void* Admin::ReceiveRequest(void* args)
 {
 	Admin* para = (Admin*)args;
 	while (para->Online) //server is online
 	{
 		//accept
 		socklen_t addrClientSize = sizeof(para->ClientList[Client::ClientNum].addrClient);
-		para->ClientList[Client::ClientNum].sockClient = accept(sockServer, (struct sockaddr*)&para->ClientList[Client::ClientNum].addrClient, &addrClientSize);
+		para->ClientList[Client::ClientNum].sockClient = accept(para->sockServer, (struct sockaddr*)&para->ClientList[Client::ClientNum].addrClient, &addrClientSize);
 
 		//client is online
 		printf("User IP:%s connected..\n", inet_ntoa(para->ClientList[Client::ClientNum].addrClient.sin_addr));

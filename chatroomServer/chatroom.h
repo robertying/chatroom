@@ -75,14 +75,14 @@ public:
 	void ReceiveString(int ID, char* StringToReceive);
 
 	//receive client requests
-	static void ReceiveRequest(void* args);
+	static void* ReceiveRequest(void* args);
 
 	//close client sockets
 	void CloseClientSocket(int ID);
 
 	//thread functions
-	static void Input(void* args);
-	static void Output(void* args);
+	static void* Input(void* args);
+	static void* Output(void* args);
 protected:
 	//for increasing clients
 	vector <Client> ClientList;
