@@ -16,8 +16,8 @@ int main()
 	user.SetName(name);
 
 	//threads to input and output logs
-	thread InputThread(mem_fn(&User::Input), user);
-	thread OutputThread(mem_fn(&User::Output), user);
+	thread InputThread(&User::Input, user);
+	thread OutputThread(&User::Output, user);
 	InputThread.join();
 	OutputThread.join();
 

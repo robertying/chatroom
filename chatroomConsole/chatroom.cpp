@@ -1,5 +1,6 @@
 #include "chatroom.h"
 mutex mtx;
+bool Server::Online = false;
 
 int Client::InitializeClient()
 {
@@ -33,12 +34,14 @@ void Client::ConnectClientSocket()
 {
 	//connect
 	connect(sockClient, (SOCKADDR *)&addrServ, sizeof(SOCKADDR));
+	Online = true;
 }
 
 void Client::CloseClientSocket()
 {
 	//close and clean
 	closesocket(sockClient);
+	Online = false;
 	WSACleanup();
 }
 
@@ -61,7 +64,14 @@ bool User::SetName(string name)
 
 void User::SendString(char* StringToSend)
 {
-	send(sockClient, StringToSend, strlen(StringToSend), 0);
+	int status;
+	status=send(sockClient, StringToSend, strlen(StringToSend), 0);
+	if (status <= 0 && errno != EINTR)
+	{
+		Server::Online = false;
+		CloseClientSocket();
+		ConnectionLost();
+	}
 }
 
 void User::ReceiveString(char * StringToReceive)
@@ -71,12 +81,15 @@ void User::ReceiveString(char * StringToReceive)
 
 void User::Input()
 {
+	char test;
+	cin >> test;
 	char inputBuffer[200];
 	memset(inputBuffer, 0, sizeof(inputBuffer));
 	while (Online)
 	{
-		cout << "message:"; //TO BE REMOVED
-		cin >> inputBuffer; //TODO receive text from gui
+		//cout << "message:"; //TO BE REMOVED
+		//cout << "aaa";
+		cin.getline(inputBuffer,200,'\n'); //TODO receive text from gui
 		SendString(inputBuffer);
 		memset(inputBuffer, 0, sizeof(inputBuffer));
 	}
@@ -115,6 +128,16 @@ void User::Output()
 
 		memset(recvBuffer, 0, sizeof(recvBuffer));
 	}
+}
+
+void User::ConnectionLost()
+{
+	//.....
+	Reconnect();
+}
+
+void User::Reconnect()
+{
 }
 
 File::File()

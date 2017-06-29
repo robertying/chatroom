@@ -28,9 +28,19 @@ public:
 	void CreateClientSocket();
 	void ConnectClientSocket();
 	void CloseClientSocket();
+
+	//online status
+	bool Online;
 protected:
 	SOCKET sockClient;
 	SOCKADDR_IN addrServ;
+};
+
+//server
+class Server
+{
+public:
+	static bool Online;
 };
 
 //base class for sending and receiving functions
@@ -58,8 +68,9 @@ public:
 	void Input();
 	void Output();
 
-	//online status
-	bool Online;
+	//connection
+	void ConnectionLost();
+	void Reconnect();
 protected:
 	string Name;
 };

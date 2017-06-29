@@ -49,7 +49,13 @@ void Admin::SendString(int ID, char* StringToSend)
 
 void Admin::ReceiveString(int ID, char* StringToReceive)
 {
-	recv(ClientList[ID].sockClient, StringToReceive, 200, 0);
+	int status;
+	status=recv(ClientList[ID].sockClient, StringToReceive, 200, 0);
+	if (status <= 0 && errno != EINTR)
+	{
+		ClientList[ID].Online = false;
+		CloseClientSocket(ID);
+	}
 }
 
 void* Admin::Input(void* args)
