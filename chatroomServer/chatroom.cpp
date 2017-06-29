@@ -121,12 +121,12 @@ void* Admin::Output(void* args)
 
 void* Admin::ReceiveRequest(void* args)
 {
-	Admin* para = (Admin*)args;
+	Admin* para = (Admin *)args;
 	while (para->Online) //server is online
 	{
 		//accept
 		socklen_t addrClientSize = sizeof(para->ClientList[Client::ClientNum].addrClient);
-		para->ClientList[Client::ClientNum].sockClient = accept(para->sockServer, (struct sockaddr*)&para->ClientList[Client::ClientNum].addrClient, &addrClientSize);
+		para->ClientList[Client::ClientNum].sockClient = accept(para->sockServer, (struct sockaddr*)&(para->ClientList[Client::ClientNum].addrClient), &addrClientSize);
 
 		//client is online
 		printf("User IP:%s connected..\n", inet_ntoa(para->ClientList[Client::ClientNum].addrClient.sin_addr));
