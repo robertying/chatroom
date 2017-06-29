@@ -118,17 +118,18 @@ void Admin::Output(void* args)
 	}
 }
 
-void Admin::ReceiveRequest()
+void Admin::ReceiveRequest(void* args)
 {
-	while (Online) //server is online
+	Admin* para = (Admin*)args;
+	while (para->Online) //server is online
 	{
 		//accept
-		socklen_t addrClientSize = sizeof(ClientList[Client::ClientNum].addrClient);
-		ClientList[Client::ClientNum].sockClient = accept(sockServer, (struct sockaddr*)&ClientList[Client::ClientNum].addrClient, &addrClientSize);
+		socklen_t addrClientSize = sizeof(para->ClientList[Client::ClientNum].addrClient);
+		para->ClientList[Client::ClientNum].sockClient = accept(sockServer, (struct sockaddr*)&para->ClientList[Client::ClientNum].addrClient, &addrClientSize);
 
 		//client is online
-		printf("User IP:%s connected..\n", inet_ntoa(ClientList[Client::ClientNum].addrClient.sin_addr));
-		ClientList[Client::ClientNum].Online = true;
+		printf("User IP:%s connected..\n", inet_ntoa(para->ClientList[Client::ClientNum].addrClient.sin_addr));
+		para->ClientList[Client::ClientNum].Online = true;
 
 		Client::ClientNum++;
 	}

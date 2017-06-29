@@ -75,7 +75,7 @@ public:
 	void ReceiveString(int ID, char* StringToReceive);
 
 	//receive client requests
-	void ReceiveRequest();
+	static void ReceiveRequest(void* args);
 
 	//close client sockets
 	void CloseClientSocket(int ID);
