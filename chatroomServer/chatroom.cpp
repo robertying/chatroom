@@ -37,21 +37,22 @@ void Server::CloseServerSocket()
 {
 	close(sockServer);
 	cout << "CloseServerSocket" << endl;
+	admin.Online = false;
 }
 
 void Admin::CloseClientSocket(int ID)
 {
 	close(ClientList[ID].sockClient);
 	cout << "Client " << ID << " closed" << endl;
+	ClientList[ID].Online = false;
 }
 
 void Admin::SendString(int ID, char* StringToSend)
 {
 	int status;
 	status=send(ClientList[ID].sockClient, StringToSend, strlen(StringToSend), 0);
-	if (status <= 0)
+	if (status < 0)
 	{
-		ClientList[ID].Online = false;
 		CloseClientSocket(ID);
 	}
 	cout << "SendString" << endl;
@@ -59,13 +60,7 @@ void Admin::SendString(int ID, char* StringToSend)
 
 void Admin::ReceiveString(int ID, char* StringToReceive)
 {
-	int status;
 	status=recv(ClientList[ID].sockClient, StringToReceive, 200, 0);
-	if (status <= 0)
-	{
-		ClientList[ID].Online = false;
-		CloseClientSocket(ID);
-	}
 	cout << "ReceiveString" << endl;
 }
 
@@ -132,7 +127,6 @@ void* Admin::Output(void* args)
 		input.close();
 		pthread_mutex_unlock(&mtx);
 
-		cout << sendBuffer << endl;
 		//send
 		para->pThis->SendString(para->ID, sendBuffer);
 		memset(sendBuffer, 0, sizeof(sendBuffer));
@@ -210,7 +204,7 @@ fstream& operator<<(fstream& output, ServerLog& log)
 	if (!flag) alltemp.push_back(log.LogContent);
 
 	//write new logs to the log file
-	output.open(log.Path, ios::out);
+	output.open(log.Path, ios::out|ios::app);
 	for (i = 0; i < alltemp.size(); ++i)
 	{
 		output << alltemp[i].Name << " "

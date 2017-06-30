@@ -1,6 +1,5 @@
 #include "chatroom.h"
 mutex mtx;
-bool Server::Online = false;
 
 int Client::InitializeClient()
 {
@@ -72,7 +71,6 @@ void User::SendString(char* StringToSend)
 	status=send(sockClient, StringToSend, strlen(StringToSend), 0);
 	if (status <= 0)
 	{
-		Server::Online = false;
 		CloseClientSocket();
 		ConnectionLost();
 	}
@@ -163,7 +161,7 @@ fstream& operator<<(fstream& output, ClientLog& log)
 	mtx.lock();
 
 	//read from log file
-	output.open(log.Path, ios::in|ios::app);
+	output.open(log.Path, ios::in);
 	vector <Log> alltemp;
 	Log temp;
 	output >> temp.Name >> temp.rawTime >> temp.Content;
@@ -197,7 +195,7 @@ fstream& operator<<(fstream& output, ClientLog& log)
 	if (!flag) alltemp.push_back(log.LogContent);
 
 	//write new logs to the log file
-	output.open(log.Path, ios::out);
+	output.open(log.Path, ios::out|ios::app);
 	for (i = 0; i < alltemp.size(); ++i)
 	{
 		output << alltemp[i].Name << " " 

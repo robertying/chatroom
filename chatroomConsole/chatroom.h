@@ -36,13 +36,6 @@ protected:
 	SOCKADDR_IN addrServ;
 };
 
-//server
-class Server
-{
-public:
-	static bool Online;
-};
-
 //base class for sending and receiving functions
 class Communication
 {

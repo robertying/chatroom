@@ -44,7 +44,6 @@ int main()
 
 	//close server socket and offline
 	admin.CloseServerSocket();
-	admin.Online = false;
 
 	return 0;
 }

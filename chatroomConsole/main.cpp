@@ -9,10 +9,14 @@ int main()
 	user.ConnectClientSocket(); //TO DO : IS SERVER ONLINE? CONNECTION LOST
 	
 	//acquire user name
-	cout << "Name:";// TO BE REMOVED
+	cout << "Name: ";// TO BE REMOVED
 	char name[20];
 	cin >> name;
-	user.SetName(name);
+	if (!user.SetName(name))
+	{
+		cout << "Name again: ";
+		cin >> name;
+	}
 
 	//threads to input and output logs
 	thread InputThread(&User::Input, user);
