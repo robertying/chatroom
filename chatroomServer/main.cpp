@@ -11,22 +11,25 @@ int main()
 	pthread_t threadRequest;
 	pthread_create(&threadRequest, NULL, admin.ReceiveRequest, (void*)&admin);
 
-	//thread to receive client messages and send server logs
 	int i;
 	int ThreadNum = 0;
 	vector <pthread_t> ReceiveThread;
 	vector <pthread_t> SendThread;
-	for (i = ThreadNum; i < Client::ClientNum; ++i)
+	while (admin.Online)
 	{
-		Parameter para;
-		para.pThis = &admin;
-		para.ID = ThreadNum;
-		pthread_t tmp;
-		pthread_create(&tmp, NULL, &Admin::Input, (void *)&para);
-		ReceiveThread.push_back(tmp);
-		pthread_create(&tmp, NULL, &Admin::Output, (void *)&para);
-		SendThread.push_back(tmp);
-		ThreadNum++;
+		//thread to receive client messages and send server logs
+		for (i = ThreadNum; i < Client::ClientNum; ++i)
+		{
+			Parameter para;
+			para.pThis = &admin;
+			para.ID = ThreadNum;
+			pthread_t tmp;
+			pthread_create(&tmp, NULL, admin.Input, (void *)&para);
+			ReceiveThread.push_back(tmp);
+			pthread_create(&tmp, NULL, admin.Output, (void *)&para);
+			SendThread.push_back(tmp);
+			ThreadNum++;
+		}
 	}
 
 	//wait for threads to end
