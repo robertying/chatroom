@@ -2,13 +2,8 @@
 
 int main()
 {
-	//initialize client socket
-	User user;
-	user.InitializeClient();
-	user.CreateClientSocket();
-	user.ConnectClientSocket(); //TO DO : IS SERVER ONLINE? CONNECTION LOST
-	
 	//acquire user name
+	User user;
 	cout << "Name: ";// TO BE REMOVED
 	char name[20];
 	cin >> name;
@@ -18,6 +13,11 @@ int main()
 		cin >> name;
 	}
 
+	//initialize client socket
+	user.InitializeClient();
+	user.CreateClientSocket();
+	user.ConnectClientSocket(); //TO DO : IS SERVER ONLINE? CONNECTION LOST
+	
 	//threads to input and output logs
 	thread InputThread(&User::Input, user);
 	thread OutputThread(&User::Output, user);

@@ -117,13 +117,12 @@ void* Admin::Output(void* args)
 		input.open("log.txt", ios::in);
 		input.seekg(p);
 		input.getline(sendBuffer, 200);
-		p=input.tellg();
-		if (input.eof())
+		if (strlen(sendBuffer) == 0)
 		{
 			input.close();
-			pthread_mutex_unlock(&mtx);
 			continue;
 		}
+		p = input.tellg();
 		input.close();
 		pthread_mutex_unlock(&mtx);
 
