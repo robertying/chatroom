@@ -19,8 +19,8 @@ int main()
 	user.ConnectClientSocket(); //TO DO : IS SERVER ONLINE? CONNECTION LOST
 	
 	//threads to input and output logs
-	thread InputThread(&User::Input, user);
 	thread OutputThread(&User::Output, user);
+	thread InputThread(&User::Input, user);
 	InputThread.join();
 	OutputThread.join();
 

@@ -7,6 +7,8 @@
 #include <fstream>
 #include <mutex>
 #include <vector>
+#include <ctime>
+#include <strstream>
 #pragma comment (lib,"ws2_32.lib")
 using namespace std;
 

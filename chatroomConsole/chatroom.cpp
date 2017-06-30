@@ -90,9 +90,19 @@ void User::Input()
 	memset(inputBuffer, 0, sizeof(inputBuffer));
 	while (Online)
 	{
-		cout << "message:"; //TO BE REMOVED
-		cin.getline(inputBuffer,200,'\n'); //TODO receive text from gui
-		strcpy_s(inputBuffer,"hello world!");
+		//acquire messages
+		cout << "Message:"; //TO BE REMOVED
+		char temp[100];
+		cin.getline(temp,100,'\n'); //TODO receive text from gui
+
+		//acquire local time
+		time_t tTime = time(NULL);
+
+		//compose whole log
+		strstream str(inputBuffer, 200);
+		str << Name << " " << tTime << " " << temp;
+
+		//send
 		SendString(inputBuffer);
 		memset(inputBuffer, 0, sizeof(inputBuffer));
 	}
