@@ -47,7 +47,13 @@ void Admin::CloseClientSocket(int ID)
 
 void Admin::SendString(int ID, char* StringToSend)
 {
-	send(ClientList[ID].sockClient, StringToSend, strlen(StringToSend), 0);
+	int status;
+	status=send(ClientList[ID].sockClient, StringToSend, strlen(StringToSend), 0);
+	if (status <= 0)
+	{
+		ClientList[ID].Online = false;
+		CloseClientSocket(ID);
+	}
 	cout << "SendString" << endl;
 }
 

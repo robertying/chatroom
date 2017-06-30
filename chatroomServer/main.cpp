@@ -15,15 +15,16 @@ int main()
 	int ThreadNum = 0;
 	vector <pthread_t> ReceiveThread;
 	vector <pthread_t> SendThread;
+	Parameter para;
+	pthread_t tmp;
+
 	while (admin.Online)
 	{
 		//thread to receive client messages and send server logs
 		for (i = ThreadNum; i < Client::ClientNum; ++i)
 		{
-			Parameter para;
 			para.pThis = &admin;
 			para.ID = ThreadNum;
-			pthread_t tmp;
 			pthread_create(&tmp, NULL, admin.Input, (void *)&para);
 			ReceiveThread.push_back(tmp);
 			pthread_create(&tmp, NULL, admin.Output, (void *)&para);
