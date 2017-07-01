@@ -6,11 +6,11 @@ int main()
 	User user;
 	cout << "Name: ";// TO BE REMOVED
 	char name[20];
-	cin >> name; //FROM GUI .. NO SPACE
-	if (!user.SetName(name))
+	cin.getline(name,20); //FROM GUI .. NO SPACE
+	while (!user.SetName(name))
 	{
 		cout << "Name again: ";
-		cin >> name;
+		cin.getline(name, 20);
 	}
 
 	//recreate log
