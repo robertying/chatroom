@@ -1,5 +1,0 @@
-alice 1498924174 hi 
-bob 1498924193 hi alice
-bob 1498924193 hi alice
-bob 1498924200 quit
-alice 1498924211 quit

@@ -13,9 +13,9 @@ int main()
 		cin >> name;
 	}
 
-	//recreate log.txt
+	//recreate log
 	fstream output;
-	output.open("log.txt", ios::out);
+	output.open(string(name)+"_log.txt", ios::out);
 	output.close();
 
 	//initialize client socket
