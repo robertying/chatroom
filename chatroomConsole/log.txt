@@ -1,14 +1,5 @@
-Robert 1498910782 Hello hi
-
-Robert 1498910787 quit
-alice 1498911230 hello robert
-alice 1498911234 quit
-bob 1498912008 helo im bob
-bob 1498912010 quit
-bob 1498912014 quit
-
-carl 1498912516 hello im cal
-
-carl 1498912518 yes
-
-carl 1498912521 quit
+Robert 1498915733 hello i'm robert
+Robert 1498915736 happy
+Robert 1498915740 quit
+Alice 1498915843 hello everyone
+Alice 1498915982 quit

@@ -78,7 +78,7 @@ void* Admin::Input(void* args)
 		para->pThis->ReceiveString(para->ID, recvBuffer);
 
 		//quit option
-		if (string(recvBuffer).find("/quit",0) !=string::npos)
+		if (string(recvBuffer).find("quit",0) !=string::npos)
 		{
 			para->pThis->CloseClientSocket(para->ID);
 		}
