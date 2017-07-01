@@ -1,6 +1,8 @@
 #include "chatroom.h"
 int Client::ClientNum = 0;
-pthread_mutex_t mtx;
+vector <pthread_t> ReceiveThread;
+vector <pthread_t> SendThread;
+pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
 
 Client::Client()
 {
@@ -148,6 +150,17 @@ void* Admin::ReceiveRequest(void* args)
 		char ipBuff[INET_ADDRSTRLEN];
 		printf("User IP:%s connected..\n", inet_ntop(AF_INET, &(tmp.addrClient.sin_addr),ipBuff,sizeof(ipBuff)));
 
+		//thread to receive client messages and send server logs
+		Parameter putPara;
+		pthread_t tmpThread;
+		putPara.pThis = para;
+		putPara.ID = Client::ClientNum;
+
+		pthread_create(&tmpThread, NULL, Input, (void *)&para);
+		ReceiveThread.push_back(tmpThread);
+		pthread_create(&tmpThread, NULL, Output, (void *)&para);
+		SendThread.push_back(tmpThread);
+
 		Client::ClientNum++;
 	}
 }
@@ -164,9 +177,9 @@ void File::SetPath(char* path)
 
 fstream& operator<<(fstream& output, ServerLog& log)
 {
-	cout << "Output locks file" << endl;
 	//file lock
-	pthread_mutex_lock(&mtx);
+    pthread_mutex_lock(&mtx);
+	cout << "Output locks file" << endl;
 
 	//read from log file
 	output.open(log.Path, ios::in | ios::app);
@@ -179,6 +192,7 @@ fstream& operator<<(fstream& output, ServerLog& log)
 		output >> temp.Name >> temp.rawTime >> temp.Content;
 	}
 	output.close();
+	pthread_mutex_unlock(&mtx);
 
 	//process log
 	bool flag = 0;
@@ -202,6 +216,7 @@ fstream& operator<<(fstream& output, ServerLog& log)
 
 	if (!flag) alltemp.push_back(log.LogContent);
 
+	pthread_mutex_lock(&mtx);
 	//write new logs to the log file
 	output.open(log.Path, ios::out|ios::app);
 	for (i = 0; i < alltemp.size(); ++i)
@@ -211,22 +226,24 @@ fstream& operator<<(fstream& output, ServerLog& log)
 			<< alltemp[i].Content << endl;
 	}
 	output.close();
-	cout << "Output unlocks file" << endl;
+	
 	pthread_mutex_unlock(&mtx);
+	cout << "Output unlocks file" << endl;
 	return output;
 }
 
 fstream& operator>>(fstream& input, ServerLog& log)
 {
-	cout << "Input locks file" << endl;
 	pthread_mutex_lock(&mtx);
+	cout << "Input locks file" << endl;
 
 	input.open(log.Path, ios::in);
 	input >> log.LogContent.Name >> log.LogContent.rawTime >> log.LogContent.Content;
 
 	input.close();
-	cout << "Output unlocks file" << endl;
+	
 	pthread_mutex_unlock(&mtx);
+	cout << "Output unlocks file" << endl;
 	return input;
 }
 

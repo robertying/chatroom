@@ -179,6 +179,7 @@ fstream& operator<<(fstream& output, ClientLog& log)
 		output >> temp.Name >> temp.rawTime >> temp.Content;
 	}
 	output.close();
+	mtx.unlock();
 	
 	//process log
 	bool flag = 0;
@@ -202,6 +203,7 @@ fstream& operator<<(fstream& output, ClientLog& log)
 
 	if (!flag) alltemp.push_back(log.LogContent);
 
+	mtx.lock();
 	//write new logs to the log file
 	output.open(log.Path, ios::out|ios::app);
 	for (i = 0; i < alltemp.size(); ++i)

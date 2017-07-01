@@ -1,4 +1,6 @@
 #include "chatroom.h"
+extern vector <pthread_t> ReceiveThread;
+extern vector <pthread_t> SendThread;
 
 int main()
 {
@@ -7,33 +9,16 @@ int main()
 	admin.CreateServerSocket();
 	admin.ConnectServerSocket();
 
+	//create log.txt
+	fstream log("log.txt", ios::app | ios::out);
+	log.close();
+
 	//thread to accept clients
 	pthread_t threadRequest;
 	pthread_create(&threadRequest, NULL, admin.ReceiveRequest, (void*)&admin);
 
-	int i;
-	int ThreadNum = 0;
-	vector <pthread_t> ReceiveThread;
-	vector <pthread_t> SendThread;
-	Parameter para;
-	pthread_t tmp;
-
-	while (admin.Online)
-	{
-		//thread to receive client messages and send server logs
-		for (i = ThreadNum; i < Client::ClientNum; ++i)
-		{
-			para.pThis = &admin;
-			para.ID = ThreadNum;
-			pthread_create(&tmp, NULL, admin.Input, (void *)&para);
-			ReceiveThread.push_back(tmp);
-			pthread_create(&tmp, NULL, admin.Output, (void *)&para);
-			SendThread.push_back(tmp);
-			ThreadNum++;
-		}
-	}
-
 	//wait for threads to end
+	int i;
 	void* status;
 	pthread_join(threadRequest, &status);
 	for (i = 0; i < Client::ClientNum; ++i)
