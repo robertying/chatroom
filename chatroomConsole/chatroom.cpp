@@ -78,7 +78,7 @@ void User::SendString(char* StringToSend)
 
 void User::ReceiveString(char * StringToReceive)
 {
-	recv(sockClient, StringToReceive, 100, 0);
+	recv(sockClient, StringToReceive, 200, 0);
 }
 
 void User::Input()
@@ -116,8 +116,11 @@ void User::Output()
 	{
 		//receive
 		ReceiveString(recvBuffer);
-
-		//convert char to log
+		fstream output;
+		output.open("log.txt", ios::app | ios::out);
+		output << recvBuffer << endl;
+		output.close();
+/*		//convert char to log
 		char name[20] = { '\0' };
 		char ctime[20] = { '\0' };
 		char content[100] = { '\0' };
@@ -138,7 +141,7 @@ void User::Output()
 		//save to client log
 		fstream output;
 		output << temp;
-
+*/
 		memset(recvBuffer, 0, sizeof(recvBuffer));
 	}
 }

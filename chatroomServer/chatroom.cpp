@@ -76,8 +76,13 @@ void* Admin::Input(void* args)
 	{
 		//receive
 		para->pThis->ReceiveString(para->ID, recvBuffer);
-
-		//convert char to log
+		fstream output;
+		pthread_mutex_lock(&mtx);
+		output.open("log.txt", ios::app | ios::out);
+		output << recvBuffer << endl;
+		output.close();
+		pthread_mutex_lock(&mtx);
+/*		//convert char to log
 		char name[20] = { '\0' };
 		char ctime[20] = { '\0' };
 		char content[100] = { '\0' };
@@ -98,7 +103,7 @@ void* Admin::Input(void* args)
 		//save to server log
 		fstream output;
 		output << temp;
-
+*/
 		memset(recvBuffer, 0, sizeof(recvBuffer));
 	}
 }
@@ -122,6 +127,7 @@ void* Admin::Output(void* args)
 		if (strlen(sendBuffer) == 0)
 		{
 			input.close();
+			pthread_mutex_unlock(&mtx);
 			continue;
 		}
 		p = input.tellg();
