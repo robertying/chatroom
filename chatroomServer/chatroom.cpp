@@ -172,9 +172,9 @@ void* Admin::ReceiveRequest(void* args)
 		putPara.pThis = para;
 		putPara.ID = Client::ClientNum;
 
-		pthread_create(&tmpThread, NULL, Input, (void *)&para);
+		pthread_create(&tmpThread, NULL, Input, (void *)&putPara);
 		ReceiveThread.push_back(tmpThread);
-		pthread_create(&tmpThread, NULL, Output, (void *)&para);
+		pthread_create(&tmpThread, NULL, Output, (void *)&putPara);
 		SendThread.push_back(tmpThread);
 
 		Client::ClientNum++;
