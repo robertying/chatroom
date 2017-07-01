@@ -97,12 +97,12 @@ void User::Input()
 		//quit option
 		if (string(temp) == "/quit")
 		{
-			Sleep(1000); //TODO CONSIDER PROPER TIME WHEN QUIT
+			Sleep(2000); //TODO CONSIDER PROPER TIME WHEN QUIT
 
 			//last few things to attend to
 			time_t tTime = time(NULL);
 			strstream str(inputBuffer, 200);
-			str << Name << " " << tTime << " " << "quit";
+			str << Name << " " << tTime << " " << "quit\n";
 			SendString(inputBuffer);
 
 			fstream Output;
@@ -119,7 +119,7 @@ void User::Input()
 
 		//compose whole log
 		strstream str(inputBuffer, 200);
-		str << Name << " " << tTime << " " << temp;
+		str << Name << " " << tTime << " " << temp<<'\n';
 
 		//send
 		SendString(inputBuffer);
@@ -138,7 +138,7 @@ void User::Output()
 		ReceiveString(recvBuffer);
 		fstream output;
 		output.open("log.txt", ios::app | ios::out);
-		output << recvBuffer << endl;
+		output << recvBuffer;
 		output.close();
 /*		//convert char to log
 		char name[20] = { '\0' };

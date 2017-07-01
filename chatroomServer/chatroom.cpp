@@ -78,7 +78,7 @@ void* Admin::Input(void* args)
 		para->pThis->ReceiveString(para->ID, recvBuffer);
 
 		//quit option
-		if (string(recvBuffer) == "/quit")
+		if (string(recvBuffer).find("/quit",0) !=string::npos)
 		{
 			para->pThis->CloseClientSocket(para->ID);
 		}
@@ -87,7 +87,7 @@ void* Admin::Input(void* args)
 		fstream output;
 		pthread_mutex_lock(&mtx);
 		output.open("log.txt", ios::app | ios::out);
-		output << recvBuffer << endl;
+		output << recvBuffer;
 		output.close();
 		pthread_mutex_unlock(&mtx);
 
