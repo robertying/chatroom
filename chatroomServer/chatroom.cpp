@@ -115,6 +115,7 @@ void* Admin::Input(void* args)
 */
 		memset(recvBuffer, 0, sizeof(recvBuffer));
 	}
+	pthread_exit(0);
 }
 
 void* Admin::Output(void* args)
@@ -148,6 +149,7 @@ void* Admin::Output(void* args)
 		para->pThis->SendString(para->ID, sendBuffer);
 		memset(sendBuffer, 0, sizeof(sendBuffer));
 	}
+	pthread_exit(0);
 }
 
 void* Admin::ReceiveRequest(void* args)
@@ -167,14 +169,13 @@ void* Admin::ReceiveRequest(void* args)
 		printf("User IP:%s connected..\n", inet_ntop(AF_INET, &(tmp.addrClient.sin_addr),ipBuff,sizeof(ipBuff)));
 
 		//thread to receive client messages and send server logs
-		Parameter putPara;
 		pthread_t tmpThread;
-		putPara.pThis = para;
-		putPara.ID = Client::ClientNum;
+		para->putPara.pThis = para;
+		para->putPara.ID = Client::ClientNum;
 
-		pthread_create(&tmpThread, NULL, Input, (void *)&putPara);
+		pthread_create(&tmpThread, NULL, Input, (void *)&para->putPara);
 		ReceiveThread.push_back(tmpThread);
-		pthread_create(&tmpThread, NULL, Output, (void *)&putPara);
+		pthread_create(&tmpThread, NULL, Output, (void *)&para->putPara);
 		SendThread.push_back(tmpThread);
 
 		Client::ClientNum++;

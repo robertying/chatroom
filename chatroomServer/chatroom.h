@@ -85,6 +85,9 @@ public:
 protected:
 	//for increasing clients
 	vector <Client> ClientList;
+
+	//parameters for thread
+	Parameter putPara;
 };
 
 //base class for io
