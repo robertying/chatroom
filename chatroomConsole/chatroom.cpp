@@ -98,10 +98,22 @@ void User::Input()
 		if (string(temp) == "/quit")
 		{
 			Sleep(1000); //TODO CONSIDER PROPER TIME WHEN QUIT
-			SendString("/quit");
+
+			//last few things to attend to
+			time_t tTime = time(NULL);
+			strstream str(inputBuffer, 200);
+			str << Name << " " << tTime << " " << "quit";
+			SendString(inputBuffer);
+
+			fstream Output;
+			Output.open("log.txt", ios::app | ios::out);
+			Output << inputBuffer;
+			Output.close();
+
 			CloseClientSocket();
 			exit(0);
 		}
+
 		//acquire local time
 		time_t tTime = time(NULL);
 

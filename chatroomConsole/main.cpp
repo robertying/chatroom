@@ -13,6 +13,11 @@ int main()
 		cin >> name;
 	}
 
+	//recreate log.txt
+	fstream output;
+	output.open("log.txt", ios::out);
+	output.close();
+
 	//initialize client socket
 	user.InitializeClient();
 	user.CreateClientSocket();

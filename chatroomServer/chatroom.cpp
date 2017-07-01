@@ -144,6 +144,7 @@ void* Admin::Output(void* args)
 		pthread_mutex_unlock(&mtx);
 
 		//send
+		sendBuffer[strlen(sendBuffer)] = '\n';
 		para->pThis->SendString(para->ID, sendBuffer);
 		memset(sendBuffer, 0, sizeof(sendBuffer));
 	}
