@@ -14,7 +14,7 @@
 #include <errno.h>
 using namespace std;
 
-extern pthread_mutex_t mtx; //used for file locks
+extern pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER; //used for file locks
 
 //used to pass parameters
 class Admin;

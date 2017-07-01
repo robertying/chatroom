@@ -6,7 +6,7 @@ int main()
 	User user;
 	cout << "Name: ";// TO BE REMOVED
 	char name[20];
-	cin >> name;
+	cin >> name; //FROM GUI .. NO SPACE
 	if (!user.SetName(name))
 	{
 		cout << "Name again: ";

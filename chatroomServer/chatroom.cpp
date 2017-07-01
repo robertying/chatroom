@@ -164,7 +164,7 @@ void File::SetPath(char* path)
 
 fstream& operator<<(fstream& output, ServerLog& log)
 {
-	cout << "Call <<operator" << endl;
+	cout << "Output locks file" << endl;
 	//file lock
 	pthread_mutex_lock(&mtx);
 
@@ -211,21 +211,21 @@ fstream& operator<<(fstream& output, ServerLog& log)
 			<< alltemp[i].Content << endl;
 	}
 	output.close();
-
+	cout << "Output unlocks file" << endl;
 	pthread_mutex_unlock(&mtx);
 	return output;
 }
 
 fstream& operator>>(fstream& input, ServerLog& log)
 {
-	cout << "Call >>operator" << endl;
+	cout << "Input locks file" << endl;
 	pthread_mutex_lock(&mtx);
 
 	input.open(log.Path, ios::in);
 	input >> log.LogContent.Name >> log.LogContent.rawTime >> log.LogContent.Content;
 
 	input.close();
-
+	cout << "Output unlocks file" << endl;
 	pthread_mutex_unlock(&mtx);
 	return input;
 }

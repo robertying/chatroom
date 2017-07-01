@@ -74,13 +74,11 @@ void User::SendString(char* StringToSend)
 		CloseClientSocket();
 		ConnectionLost();
 	}
-	cout << "SendString" << endl;
 }
 
 void User::ReceiveString(char * StringToReceive)
 {
 	recv(sockClient, StringToReceive, 100, 0);
-	cout << "ReceiveString" << endl;
 }
 
 void User::Input()
@@ -93,7 +91,8 @@ void User::Input()
 		//acquire messages
 		cout << "Message:"; //TO BE REMOVED
 		char temp[100];
-		cin.getline(temp,100,'\n'); //TODO receive text from gui
+		cin.ignore(1, '\n');
+		cin.get(temp, 100, '\n'); //TODO receive text from gui
 
 		//acquire local time
 		time_t tTime = time(NULL);
@@ -166,7 +165,6 @@ void File::SetPath(char* path)
 
 fstream& operator<<(fstream& output, ClientLog& log)
 {
-	cout << "Call <<operator" << endl;
 	//file lock
 	mtx.lock();
 
@@ -220,7 +218,6 @@ fstream& operator<<(fstream& output, ClientLog& log)
 
 fstream& operator>>(fstream& input, ClientLog& log)
 {
-	cout << "Call >>operator" << endl;
 	mtx.lock();
 
 	input.open(log.Path, ios::in);
