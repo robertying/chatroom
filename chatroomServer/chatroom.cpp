@@ -69,18 +69,18 @@ void Admin::ReceiveString(int ID, char* StringToReceive)
 void* Admin::Input(void* args)
 {
 	cout << "Call Input Thread" << endl;
-	Parameter *para = (Parameter*)args;
+	Parameter para = *(Parameter*)args;
 	char recvBuffer[200];
 	memset(recvBuffer, 0, sizeof(recvBuffer));
-	while (para->pThis->ClientList[para->ID].Online)
+	while (para.pThis->ClientList[para.ID].Online)
 	{
 		//receive
-		para->pThis->ReceiveString(para->ID, recvBuffer);
+		para.pThis->ReceiveString(para.ID, recvBuffer);
 
 		//quit option
 		if (string(recvBuffer).find("quit",0) !=string::npos)
 		{
-			para->pThis->CloseClientSocket(para->ID);
+			para.pThis->CloseClientSocket(para.ID);
 		}
 
 		//write
@@ -121,13 +121,13 @@ void* Admin::Input(void* args)
 void* Admin::Output(void* args)
 {
 	cout << "Call Output Thread" << endl;
-	Parameter *para = (Parameter*)args;
+	Parameter para = *(Parameter*)args;
 	char sendBuffer[200];
 	memset(sendBuffer, 0, sizeof(sendBuffer));
 	
 	ifstream input;
 	streampos p=0;
-	while (para->pThis->ClientList[para->ID].Online)
+	while (para.pThis->ClientList[para.ID].Online)
 	{
 		//read from log
 		pthread_mutex_lock(&mtx);
@@ -146,7 +146,7 @@ void* Admin::Output(void* args)
 
 		//send
 		sendBuffer[strlen(sendBuffer)] = '\n';
-		para->pThis->SendString(para->ID, sendBuffer);
+		para.pThis->SendString(para.ID, sendBuffer);
 		memset(sendBuffer, 0, sizeof(sendBuffer));
 	}
 	pthread_exit(0);

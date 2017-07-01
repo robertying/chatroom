@@ -1,4 +1,5 @@
-robert 1498923162 hellp
-robert 1498923162 hellp
-wy 1498923166 hellaaaa
-wy 1498923276 quit
+alice 1498924174 hi 
+bob 1498924193 hi alice
+bob 1498924193 hi alice
+bob 1498924200 quit
+alice 1498924211 quit
