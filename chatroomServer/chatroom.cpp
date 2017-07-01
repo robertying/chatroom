@@ -77,6 +77,12 @@ void* Admin::Input(void* args)
 		//receive
 		para->pThis->ReceiveString(para->ID, recvBuffer);
 
+		//quit option
+		if (string(recvBuffer) == "/quit")
+		{
+			para->pThis->CloseClientSocket(para->ID);
+		}
+
 		//write
 		fstream output;
 		pthread_mutex_lock(&mtx);

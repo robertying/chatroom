@@ -95,8 +95,9 @@ void User::Input()
 		cin.get(temp, 100, '\n'); //TODO receive text from gui
 
 		//quit option
-		if (temp == "/quit")
+		if (string(temp) == "/quit")
 		{
+			Sleep(1000); //TODO CONSIDER PROPER TIME WHEN QUIT
 			SendString("/quit");
 			CloseClientSocket();
 			exit(0);
