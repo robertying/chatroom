@@ -76,12 +76,15 @@ void* Admin::Input(void* args)
 	{
 		//receive
 		para->pThis->ReceiveString(para->ID, recvBuffer);
+
+		//write
 		fstream output;
 		pthread_mutex_lock(&mtx);
 		output.open("log.txt", ios::app | ios::out);
 		output << recvBuffer << endl;
 		output.close();
-		pthread_mutex_lock(&mtx);
+		pthread_mutex_unlock(&mtx);
+
 /*		//convert char to log
 		char name[20] = { '\0' };
 		char ctime[20] = { '\0' };

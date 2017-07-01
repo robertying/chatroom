@@ -94,6 +94,13 @@ void User::Input()
 		cin.ignore(1, '\n');
 		cin.get(temp, 100, '\n'); //TODO receive text from gui
 
+		//quit option
+		if (temp == "/quit")
+		{
+			SendString("/quit");
+			CloseClientSocket();
+			exit(0);
+		}
 		//acquire local time
 		time_t tTime = time(NULL);
 
