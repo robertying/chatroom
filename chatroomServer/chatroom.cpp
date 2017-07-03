@@ -30,7 +30,7 @@ void Server::ConnectServerSocket()
 {
 	//bind the port
 	bind(sockServer, (sockaddr *)&addrServer, sizeof(addrServer));
-	listen(sockServer, 5);
+	listen(sockServer, SOMAXCONN);
 	Online = true;
 	cout << "Server started..." << endl;
 }
