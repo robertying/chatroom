@@ -1,7 +1,7 @@
 #include "chatroom.h"
 extern vector <pthread_t> ReceiveThread;
 extern vector <pthread_t> SendThread;
-extern string logPath;
+extern char* logPath;
 
 int main()
 {
@@ -13,7 +13,7 @@ int main()
 	//create log.txt
 	time_t tTime = time(NULL);
 	char* dt = ctime(&tTime);
-	logPath = string(dt) + "_log.txt";
+	logPath = strcat(dt,"_log.txt");
 
 	fstream log(logPath, ios::app | ios::out);
 	log.close();

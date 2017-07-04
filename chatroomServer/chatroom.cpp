@@ -3,7 +3,7 @@ int Client::ClientNum = 0;
 vector <pthread_t> ReceiveThread;
 vector <pthread_t> SendThread;
 pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
-string logPath;
+char* logPath;
 
 Client::Client()
 {
