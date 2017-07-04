@@ -1,6 +1,7 @@
 #include "chatroom.h"
 extern vector <pthread_t> ReceiveThread;
 extern vector <pthread_t> SendThread;
+extern string logPath;
 
 int main()
 {
@@ -10,7 +11,11 @@ int main()
 	admin.ConnectServerSocket();
 
 	//create log.txt
-	fstream log("log.txt", ios::app | ios::out);
+	time_t tTime = time(NULL);
+	char* dt = ctime(&tTime);
+	logPath = string(dt) + "_log.txt";
+
+	fstream log(logPath, ios::app | ios::out);
 	log.close();
 
 	//thread to accept clients

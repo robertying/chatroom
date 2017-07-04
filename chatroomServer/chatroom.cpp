@@ -3,6 +3,7 @@ int Client::ClientNum = 0;
 vector <pthread_t> ReceiveThread;
 vector <pthread_t> SendThread;
 pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
+string logPath;
 
 Client::Client()
 {
@@ -86,7 +87,7 @@ void* Admin::Input(void* args)
 		//write
 		fstream output;
 		pthread_mutex_lock(&mtx);
-		output.open("log.txt", ios::app | ios::out);
+		output.open(logPath, ios::app | ios::out);
 		output << recvBuffer;
 		output.close();
 		pthread_mutex_unlock(&mtx);
@@ -131,7 +132,7 @@ void* Admin::Output(void* args)
 	{
 		//read from log
 		pthread_mutex_lock(&mtx);
-		input.open("log.txt", ios::in);
+		input.open(logPath, ios::in);
 		input.seekg(p);
 		input.getline(sendBuffer, 200);
 		if (strlen(sendBuffer) == 0)
