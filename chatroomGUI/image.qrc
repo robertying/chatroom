@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>ic_insert_drive_file_black_24dp_2x.png</file>
+        <file>icon.png</file>
+    </qresource>
+</RCC>
