@@ -1,8 +1,8 @@
-﻿#include "stdafx.h"
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "about.h"
 #include "logindialog.h"
+#include "sendfile.h"
 #include <QLabel>
 #include <chatroom.h>
 #include <QKeyEvent>
@@ -15,6 +15,9 @@
 #include <QDebug>
 #include <QFileSystemWatcher>
 #include <QDesktopServices>
+#include <QDesktopWidget>
+#include <QFileDialog>
+
 extern User user;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -42,7 +45,9 @@ MainWindow::MainWindow(QWidget *parent) :
     watcher->addPath(QString::fromStdString(user.ShowName()+"_log.txt"));
     connect(watcher,SIGNAL(fileChanged(QString)),SLOT(ReadFile()));
 
-    
+    QDesktopWidget* desktop = QApplication::desktop(); // =qApp->desktop();也可以
+    move((desktop->width() - this->width())/2, (desktop->height() - this->height())/2);
+
     mtx2.lock();
 }
 
@@ -142,7 +147,8 @@ void MainWindow::ReadFile()
                     else
                     {
                     ui->textBrowser->append(QString::fromStdString(string(name)+"  @"+string(dt)+string(content)+"\n"));
-                }
+                    QApplication::alert(this);
+                    }
                     memset(log, 0, sizeof(log));
 
 
@@ -255,4 +261,16 @@ void MainWindow::closeEvent(QCloseEvent* event)
 void MainWindow::on_action_L_triggered()
 {
     QDesktopServices::openUrl(QUrl::fromLocalFile(QString::fromStdString(user.ShowName()+"_log.txt")));
+}
+
+void MainWindow::on_fileButton_released()
+{
+    QString path = QFileDialog::getOpenFileName(this, QString::fromLocal8Bit("选择要发送的文件"), ".", QString::fromLocal8Bit("所有文件(*.*)"));
+    if(path.length() != 0)
+    {
+        MainWindow::dlg = new SendFile;
+        connect(this,SIGNAL(changeName(QString)),dlg,SLOT(mySlot(QString)));
+        emit changeName(path);
+        dlg->show();
+    }
 }

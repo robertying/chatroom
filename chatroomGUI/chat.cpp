@@ -1,5 +1,4 @@
-﻿#include "stdafx.h"
-#include "chat.h"
+﻿#include "chat.h"
 #include "ui_chat.h"
 
 Chat::Chat(QWidget *parent) :

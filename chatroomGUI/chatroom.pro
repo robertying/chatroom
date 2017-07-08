@@ -32,7 +32,9 @@ SOURCES += \
     about.cpp \
     chatroom.cpp \
     clientthread.cpp \
-    chat.cpp
+    chat.cpp \
+    sendfile.cpp \
+    sendfile.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -42,14 +44,17 @@ HEADERS += \
     clientthread.h \
     chat.h \
     version.h \
-    stdafx.h \
-    resources.rc
+    resources.rc \
+    sendfile.h \
+    sendfile.h
 
 FORMS += \
         mainwindow.ui \
     logindialog.ui \
     about.ui \
-    chat.ui
+    chat.ui \
+    sendfile.ui \
+    sendfile.ui
 
 RESOURCES += \
     image.qrc \

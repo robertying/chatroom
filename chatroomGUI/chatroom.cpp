@@ -1,5 +1,4 @@
-﻿#include "stdafx.h"
-#include "chatroom.h"
+﻿#include "chatroom.h"
 #include <QDialog>
 #include <QLabel>
 #include <QStatusBar>
