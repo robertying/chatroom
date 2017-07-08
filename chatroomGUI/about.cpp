@@ -1,5 +1,4 @@
-﻿#include "stdafx.h"
-#include "about.h"
+﻿#include "about.h"
 #include "ui_about.h"
 
 About::About(QWidget *parent) :
@@ -7,6 +6,7 @@ About::About(QWidget *parent) :
     ui(new Ui::About)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowModality(Qt::ApplicationModal);
     ui->setupUi(this);
 }
 

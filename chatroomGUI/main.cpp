@@ -1,5 +1,4 @@
-﻿#include "stdafx.h"
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "logindialog.h"
 #include <QApplication>
 #include "chatroom.h"
