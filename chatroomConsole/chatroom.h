@@ -33,6 +33,7 @@ public:
 
 	//online status
 	bool Online;
+
 protected:
 	SOCKET sockClient;
 	SOCKADDR_IN addrServ;
@@ -63,9 +64,6 @@ public:
 	void Input();
 	void Output();
 
-	//connection
-	void ConnectionLost();
-	void Reconnect();
 protected:
 	string Name;
 };
@@ -76,6 +74,7 @@ class File
 public:
 	File();
 	void SetPath(char* path);
+
 protected:
 	char* Path;
 };
@@ -90,7 +89,7 @@ public:
 
 	void SetLog(string name, time_t time, char *content);
 	time_t ShowTime();
-	string tTimeTosTime();
+
 protected:
 	//local log
 	Log LogContent;

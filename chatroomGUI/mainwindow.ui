@@ -125,7 +125,7 @@
      <x>0</x>
      <y>0</y>
      <width>603</width>
-     <height>23</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_A">
@@ -168,11 +168,20 @@
    </property>
   </action>
   <action name="action_L">
+   <property name="icon">
+    <iconset resource="image.qrc">
+     <normaloff>:/image/ic_insert_drive_file_black_24dp_2x.png</normaloff>:/image/ic_insert_drive_file_black_24dp_2x.png</iconset>
+   </property>
    <property name="text">
     <string>打开聊天记录</string>
    </property>
    <property name="toolTip">
     <string>打开聊天记录</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+    </font>
    </property>
    <property name="shortcut">
     <string>Ctrl+L</string>

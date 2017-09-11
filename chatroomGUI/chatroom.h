@@ -11,14 +11,14 @@
 #include <vector>
 #include <ctime>
 #include <strstream>
-#pragma comment (lib,"ws2_32.lib")
 #include "mainwindow.h"
 #include <QString>
-#include <QLabel>
 #include <QTextBrowser>
+#pragma comment (lib,"ws2_32.lib")
 using namespace std;
 
-extern mutex mtx; //used for file locks
+//used for file locks
+extern mutex mtx;
 extern mutex mtx2;
 
 //log format
@@ -40,12 +40,13 @@ public:
 
     //online status
     bool Online;
+
 protected:
     SOCKET sockClient;
     SOCKADDR_IN addrServ;
 };
 
-//base class for sending and receiving functions
+//abstract base class for sending and receiving functions
 class Communication
 {
 public:
@@ -59,7 +60,7 @@ class User :public Client,public Communication
 public:
     User();
 
-    //return true for the valid name, false otherwise
+    //set name with different codecs
     void SetName(string name);
     void SetUtfName(string name);
 
@@ -67,7 +68,7 @@ public:
     string ShowUtfName();
     string ShowName();
 
-    //instantiation for virtual functions
+    //instantiation of virtual functions
     void SendString(char* StringToSend);
     void ReceiveString(char* StringToReceive);
 
@@ -76,18 +77,14 @@ public:
     void Output();
     void ReadFile(QTextBrowser* textBrowser);
 
-    //connection
-    void ConnectionLost();
-    void Reconnect();
-
+    //variables to transfer messages between windows and threads
     MainWindow* mainWindow;
     QString Message;
     QString MessageToReceive;
+
 protected:
     string Name;
     string UtfName;
-
-
 };
 
 //base class for io
@@ -96,6 +93,7 @@ class File
 public:
     File();
     void SetPath(char* path);
+
 protected:
     char* Path;
 };
@@ -108,9 +106,12 @@ public:
     friend fstream& operator<<(fstream&, ClientLog&);
     friend fstream& operator>>(fstream&, ClientLog&);
 
+    //set messages to send with proper format
     void SetLog(string name, time_t time, char *content);
+
+    //acquire time
     time_t ShowTime();
-    string tTimeTosTime();
+
 protected:
     //local log
     Log LogContent;

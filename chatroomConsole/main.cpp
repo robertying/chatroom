@@ -4,9 +4,9 @@ int main()
 {
 	//acquire user name
 	User user;
-	cout << "Name: ";// TO BE REMOVED
+	cout << "Name: ";
 	char name[20];
-	cin.getline(name,20); //FROM GUI .. NO SPACE
+	cin.getline(name,20);
 	while (!user.SetName(name))
 	{
 		cout << "Name again: ";
@@ -21,7 +21,7 @@ int main()
 	//initialize client socket
 	user.InitializeClient();
 	user.CreateClientSocket();
-	user.ConnectClientSocket(); //TO DO : IS SERVER ONLINE? CONNECTION LOST
+	user.ConnectClientSocket();
 	
 	//threads to input and output logs
 	thread OutputThread(&User::Output, user);

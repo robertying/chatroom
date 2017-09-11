@@ -30,31 +30,19 @@ SOURCES += \
         mainwindow.cpp \
     logindialog.cpp \
     about.cpp \
-    chatroom.cpp \
-    clientthread.cpp \
-    chat.cpp \
-    sendfile.cpp \
-    sendfile.cpp
+    chatroom.cpp
 
 HEADERS += \
         mainwindow.h \
     logindialog.h \
     about.h \
     chatroom.h \
-    clientthread.h \
-    chat.h \
-    version.h \
-    resources.rc \
-    sendfile.h \
-    sendfile.h
+    resources.rc
 
 FORMS += \
         mainwindow.ui \
     logindialog.ui \
-    about.ui \
-    chat.ui \
-    sendfile.ui \
-    sendfile.ui
+    about.ui
 
 RESOURCES += \
     image.qrc \

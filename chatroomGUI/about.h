@@ -1,4 +1,5 @@
-﻿#ifndef ABOUT_H
+﻿//about window
+#ifndef ABOUT_H
 #define ABOUT_H
 
 #include <QDialog>
@@ -16,6 +17,7 @@ public:
     ~About();
 
 private slots:
+    //click to show
     void on_pushButton_clicked();
 
 private:

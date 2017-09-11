@@ -7,8 +7,8 @@
 #endif
 
 VS_VERSION_INFO VERSIONINFO
-    FILEVERSION 0,1,4,0
-    PRODUCTVERSION 0,1,4,0
+    FILEVERSION 0,1,5,0
+    PRODUCTVERSION 0,1,5,0
     FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
     FILEFLAGS VS_FF_DEBUG
@@ -25,8 +25,8 @@ VS_VERSION_INFO VERSIONINFO
             BEGIN
                 VALUE "CompanyName", "Robert Ying"
                 VALUE "FileDescription", "Multiuser Online Chatroom"
-                VALUE "FileVersion", "0.1.4.0"
-                VALUE "ProductVersion", "0.1.4.0"
+                VALUE "FileVersion", "0.1.5.0"
+                VALUE "ProductVersion", "0.1.5.0"
                 VALUE "LegalCopyright", "Copyright 2017 Robert Ying"
                 VALUE "OriginalFilename", "chatroom.exe"
                 VALUE "ProductName", "Four Chatroom"

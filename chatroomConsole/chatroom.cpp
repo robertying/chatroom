@@ -72,7 +72,6 @@ void User::SendString(char* StringToSend)
 	if (status <= 0)
 	{
 		CloseClientSocket();
-		ConnectionLost();
 	}
 }
 
@@ -89,15 +88,15 @@ void User::Input()
 	while (Online)
 	{
 		//acquire messages
-		cout << "Message:"; //TO BE REMOVED
+		cout << "Message:"; 
 		char temp[100];
 		cin.ignore(1, '\n');
-		cin.get(temp, 100, '\n'); //TODO receive text from gui
+		cin.get(temp, 100, '\n'); 
 
 		//quit option
 		if (string(temp) == "/quit")
 		{
-			Sleep(1000); //TODO CONSIDER PROPER TIME WHEN QUIT
+			Sleep(1000); 
 
 			//last few things to attend to
 			time_t tTime = time(NULL);
@@ -140,40 +139,8 @@ void User::Output()
 		output.open(Name + "_log.txt", ios::app | ios::out);
 		output << recvBuffer;
 		output.close();
-/*		//convert char to log
-		char name[20] = { '\0' };
-		char ctime[20] = { '\0' };
-		char content[100] = { '\0' };
-		time_t time;
-
-		string str = string(recvBuffer);
-		int begin = str.find_first_of(' ');
-		int end = str.find(' ', begin + 1);
-		str.copy(name, begin, 0);
-		str.copy(ctime, end - begin, begin);
-		time = atol(ctime);
-		string newstr = str.erase(0, end + 1);
-		newstr.copy(content, newstr.length(), 0);
-
-		ClientLog temp;
-		temp.SetLog(string(name), time, content);
-
-		//save to client log
-		fstream output;
-		output << temp;
-*/
 		memset(recvBuffer, 0, sizeof(recvBuffer));
 	}
-}
-
-void User::ConnectionLost()
-{
-	//.....
-	Reconnect();
-}
-
-void User::Reconnect()
-{
 }
 
 File::File()

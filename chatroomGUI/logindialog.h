@@ -1,4 +1,5 @@
-﻿#ifndef LOGINDIALOG_H
+﻿//login dialog
+#ifndef LOGINDIALOG_H
 #define LOGINDIALOG_H
 
 #include <QDialog>
@@ -19,6 +20,7 @@ private:
     Ui::LoginDialog *ui;
 
 private slots:
+    //click to login
     void on_loginbutton_clicked();
 };
 

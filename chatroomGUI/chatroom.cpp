@@ -1,17 +1,16 @@
 ﻿#include "chatroom.h"
-#include <QDialog>
-#include <QLabel>
-#include <QStatusBar>
 #include <QFile>
 #include <QTextBrowser>
 #include <QTextStream>
-#include <QDebug>
+#include <QStatusBar>
+
+//used for file locks
 mutex mtx;
 mutex mtx2;
 
 int Client::InitializeClient(MainWindow* mainWindow)
 {
-    //call dll
+    //call Windows socket dll
     int err;
     WSADATA wsaData;
     WORD wVersionRequested;
@@ -23,6 +22,8 @@ int Client::InitializeClient(MainWindow* mainWindow)
         WSACleanup();
         return -2;
     }
+
+    //show status in mainwindow
     mainWindow->statusBar()->showMessage(QString::fromLocal8Bit("客户端初始化..."));
     return 0;
 }
@@ -36,6 +37,8 @@ void Client::CreateClientSocket(MainWindow* mainWindow)
     addrServ.sin_addr.S_un.S_addr = inet_addr("45.55.3.170");
     addrServ.sin_family = AF_INET;
     addrServ.sin_port = htons(42001);
+
+    //show status in mainwindow
     mainWindow->statusBar()->showMessage(QString::fromLocal8Bit("客户端初始化..."));
 }
 
@@ -44,6 +47,8 @@ bool Client::ConnectClientSocket(MainWindow* mainWindow)
     //connect
     bool success=connect(sockClient, (SOCKADDR *)&addrServ, sizeof(SOCKADDR));
     Online = true;
+
+    //show status in mainwindow
     mainWindow->statusBar()->showMessage(QString::fromLocal8Bit("客户端已连接..."));
     return (!success);
 }
@@ -70,6 +75,7 @@ void User::SetName(string name)
 
 void User::SetUtfName(string name)
 {
+    //to use Unicode for codec
     UtfName=QString::fromStdString(name).toLocal8Bit().toStdString();
 }
 
@@ -85,16 +91,19 @@ string User::ShowUtfName()
 
 void User::SendString(char* StringToSend)
 {
+    //send messages on socket
     int status=send(sockClient, StringToSend, int(strlen(StringToSend)), 0);
+
+    //check if connection is alive
     if (status <= 0)
     {
         CloseClientSocket(mainWindow);
-        ConnectionLost();
     }
 }
 
 void User::ReceiveString(char * StringToReceive)
 {
+    //receive messages
     recv(sockClient, StringToReceive, 200, 0);
 }
 
@@ -102,21 +111,22 @@ void User::Input()
 {
     char inputBuffer[200];
     memset(inputBuffer, 0, sizeof(inputBuffer));
+
+    //if online then keep working
     if (Online)
     {
-        //acquire messages
+        //acquire messages from mainwindow
         string temp=Message.toStdString();
 
-
-
-        //acquire local time
+        //acquire local time to generate message logs
         time_t tTime = time(NULL);
 
-        //compose whole log
+        //compose whole logs
         strstream str(inputBuffer, 200);
         str << Name << " " << tTime << " " << temp<<'\n';
 
         //send
+        //use lock to avoid the message being changed by another thread
         mtx2.lock();
         SendString(inputBuffer);
         mtx2.unlock();
@@ -124,86 +134,59 @@ void User::Input()
     }
     else
     {
-        qDebug()<<"im here";
-    //quit option
-       // Sleep(500); //TODO CONSIDER PROPER TIME WHEN QUIT
-
         //last few things to attend to
         time_t tTime = time(NULL);
         strstream str(inputBuffer, 200);
         str << Name << " " << tTime << " " << "quit\n";
+
+        //send quit to server
         mtx2.lock();
         SendString(inputBuffer);
         mtx2.unlock();
         memset(inputBuffer, 0, sizeof(inputBuffer));
 
+        //locally write the log since offline
         fstream Output;
         Output.open(UtfName+"_log.txt", ios::app | ios::out);
         Output << inputBuffer;
         Output.close();
-}
-
+    }
 }
 
 void User::Output()
 {
     char recvBuffer[200];
     memset(recvBuffer, 0, sizeof(recvBuffer));
+
+    //if online then keep working
     while (Online)
     {
         //receive
         ReceiveString(recvBuffer);
+
+        //write messages from server to local logs
         fstream output;
         output.open(UtfName+"_log.txt", ios::app | ios::out);
         output << recvBuffer;
         output.close();
-
-/*		//convert char to log
-        char name[20] = { '\0' };
-        char ctime[20] = { '\0' };
-        char content[100] = { '\0' };
-        time_t time;
-
-        string str = string(recvBuffer);
-        int begin = str.find_first_of(' ');
-        int end = str.find(' ', begin + 1);
-        str.copy(name, begin, 0);
-        str.copy(ctime, end - begin, begin);
-        time = atol(ctime);
-        string newstr = str.erase(0, end + 1);
-        newstr.copy(content, newstr.length(), 0);
-
-        ClientLog temp;
-        temp.SetLog(string(name), time, content);
-
-        //save to client log
-        fstream output;
-        output << temp;
-*/
         memset(recvBuffer, 0, sizeof(recvBuffer));
     }
 }
 
 void User::ReadFile(QTextBrowser* textBrowser)
 {
+    //if online then keep working
     while (Online)
     {
-    QFile file(QString::fromStdString(UtfName+"_log.txt"));
-    file.open(QIODevice::ReadOnly);
-    QTextStream in(&file);
-    textBrowser->setText(in.readAll());
-    file.close();
+        //read local log
+        QFile file(QString::fromStdString(UtfName+"_log.txt"));
+        file.open(QIODevice::ReadOnly);
+        QTextStream in(&file);
+
+        //present all logs in text browser
+        textBrowser->setText(in.readAll());
+        file.close();
     }
-}
-
-void User::ConnectionLost()
-{
-    //.....
-    Reconnect();
-}
-
-void User::Reconnect()
-{
 }
 
 File::File()
@@ -277,7 +260,6 @@ fstream& operator>>(fstream& input, ClientLog& log)
 
     input.open(log.Path, ios::in);
     input >> log.LogContent.Name >> log.LogContent.rawTime >> log.LogContent.Content;
-
     input.close();
 
     mtx.unlock();
@@ -293,5 +275,6 @@ void ClientLog::SetLog(string name, time_t time, char* content)
 
 time_t ClientLog::ShowTime()
 {
+    //show raw time
     return LogContent.rawTime;
 }
